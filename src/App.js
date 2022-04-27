@@ -10,10 +10,17 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [suggested, setSuggested] = useState([]);
+  let word;
 
   const handleChange = (e) => {
     setSearch(e.target.value);
     setRandom('');
+  };
+
+  const handleSelect = (e) => {
+    word = e.target.innerText;
+    setSearch('');
+    setSuggested([]);
   }
 
   useEffect(() => {
@@ -64,15 +71,18 @@ function App() {
         <input type="text" value={search} onChange={handleChange} />
         {
           search &&
-          <Card>
-            <CardContent>
-              <Box>
-                {suggested.map(el => (
-                  <Box sx={{paddingBottom: '0.3em'}} key={el.word}>{firstLetterUpperCase(el.word)}</Box>
-                ))}
+          <Box>
+            {suggested.map(el => (
+              <Box sx={{
+                padding: '0.5em',
+                borderBottom: '1px solid grey'}}
+                onClick={handleSelect} 
+                key={el.word}
+                >
+                {firstLetterUpperCase(el.word)}
               </Box>
-            </CardContent>
-          </Card>
+            ))}
+          </Box>
         }
       </Box>
     </div>
