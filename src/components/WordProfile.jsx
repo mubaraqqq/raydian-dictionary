@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography } from '@mui/material';
+import firstLetterUpperCase from '../utils/firstLetterUpperCase';
 
 
 
 const WordProfile = ({ word }) => {
   const [wordData, setWordData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const firstLetterUpperCase = (arr) => {
-        if (arr) {
-            let str = arr?.split('');
-            str[0] = str[0].toUpperCase();
-            return str.join('');
-        }
-    };
-
-
     
   useEffect(() => {
       axios
