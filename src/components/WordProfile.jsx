@@ -23,7 +23,6 @@ const WordProfile = ({ word }) => {
   }, [word])
 
   console.log(wordData);
-  console.log(isLoading);
   
   if (isLoading) return <h1>Loading</h1>
     
