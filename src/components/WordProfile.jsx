@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import firstLetterUpperCase from '../utils/firstLetterUpperCase';
 
 
 
 const WordProfile = ({ word }) => {
-  const [wordData, setWordData] = useState([]);
+  const [wordData, setWordData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState([]);
     
   useEffect(() => {
       axios
@@ -17,7 +18,7 @@ const WordProfile = ({ word }) => {
             setIsLoading(false);
         })
         .catch((err) => {
-            console.log(err);
+            setError(err);
             setIsLoading(false);
         })
   }, [word])
@@ -25,22 +26,36 @@ const WordProfile = ({ word }) => {
   console.log(wordData);
   
   if (isLoading) return <h1>Loading</h1>
+
+//   if (error) return <p>Search for another word</p>
     
   return (
     <Card sx={{ width: 700 }}>
-    <CardContent>
-        <Typography variant="h5" component="div">
-            {firstLetterUpperCase(wordData.word)}
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {wordData.meanings[0].partOfSpeech}
-        </Typography>
-        <Typography variant="body2">
-            {wordData.meanings[0].definitions[0].definition}
-            <br />
-            {'"a benevolent smile"'}
-        </Typography>
-    </CardContent>
+        <CardContent>
+            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Typography variant="h5" component="div">
+                    {firstLetterUpperCase(wordData.word)}
+                </Typography>
+                <audio src={wordData.phonetics[0].audio} controls/>
+            </Box>
+            <Typography variant="body1">
+                {wordData.phonetic}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                {wordData.meanings[0].partOfSpeech}
+            </Typography>
+            <ol>
+                {
+                    wordData.meanings[0].definitions.map((el, i) => (
+                        <li key={i}>
+                            <Typography variant="body2">
+                                {el.definition}
+                            </Typography>
+                        </li>
+                    ))
+                }
+            </ol>
+        </CardContent>
     </Card>
   )
 }

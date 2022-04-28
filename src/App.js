@@ -10,15 +10,15 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [suggested, setSuggested] = useState([]);
-  let word;
+  const [word, setWord] = useState('');
 
   const handleChange = (e) => {
     setSearch(e.target.value);
-    setRandom('');
+    // setRandom('');
   };
 
   const handleSelect = (e) => {
-    word = e.target.innerText;
+    setWord(e.target.innerText);
     setSearch('');
     setSuggested([]);
   }
@@ -45,7 +45,7 @@ function App() {
       .catch((err) => {
         console.log(err);
       })
-  }, [search])
+  }, [search]);
   
   if (isLoading) return <h1>Loading</h1>
 
@@ -68,7 +68,8 @@ function App() {
         </Card>
       }
       <Box>
-        <input type="text" value={search} onChange={handleChange} />
+        <input type="text" placeholder='Search for a word...' value={search} onChange={handleChange} />
+        <Typography variant='body2'>{firstLetterUpperCase(word)}</Typography>
         {
           search &&
           <Box>
@@ -83,6 +84,9 @@ function App() {
               </Box>
             ))}
           </Box>
+        }
+        {
+          word && <WordProfile word={word} />
         }
       </Box>
     </div>
