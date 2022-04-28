@@ -8,7 +8,7 @@ import firstLetterUpperCase from '../utils/firstLetterUpperCase';
 const WordProfile = ({ word }) => {
   const [wordData, setWordData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState([]);
+  const [error, setError] = useState('');
     
   useEffect(() => {
       axios
@@ -18,7 +18,8 @@ const WordProfile = ({ word }) => {
             setIsLoading(false);
         })
         .catch((err) => {
-            setError(err);
+            setError('The definition for this word is not available, try another word.');
+            console.log(error)
             setIsLoading(false);
         })
   }, [word])
@@ -27,10 +28,10 @@ const WordProfile = ({ word }) => {
   
   if (isLoading) return <h1>Loading</h1>
 
-//   if (error) return <p>Search for another word</p>
+  if (error) return <p>{error}</p>
     
   return (
-    <Card sx={{ width: 700 }}>
+    <Card  sx={{width: '90%', margin: '1em', padding: '0 1em'}}>
         <CardContent>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                 <Typography variant="h5" component="div">
